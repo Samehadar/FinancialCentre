@@ -14,24 +14,27 @@ import scala.concurrent.ExecutionContext
   */
 class TransactionRouter(transactionService: TransactionService)(implicit executionContext: ExecutionContext) {
 
+  import akka.http.scaladsl.model.StatusCodes.OK
+
   val route: Route =
     post {
       path("transact") {
         pathEndOrSingleSlash {
           import com.samehadar.financialcentre.http.message.MyProtocol._
           entity(as[DoTransactionMessage]) { transactions =>
-            onComplete(
-              transactionService.getBalance(message)
-            ) {
-              case Success(value) => value match {
-                case balanceFact :: Nil => complete(OK -> ResponseGetBalance(balanceFact).asJson)
-                case _ :: _ => complete(BadRequest -> "More than 1 request result".asJson)
-                case _ => complete(OK -> Option(null)) // todo:: remove null
-              }
-              case Failure(ex)    =>
-                println(ex.getMessage)
-                complete((InternalServerError, s"An error occurred: ${ex.getMessage}"))
-            }
+//            onComplete(
+//              transactionService.getBalance(message)
+//            ) {
+//              case Success(value) => value match {
+//                case balanceFact :: Nil => complete(OK -> ResponseGetBalance(balanceFact).asJson)
+//                case _ :: _ => complete(BadRequest -> "More than 1 request result".asJson)
+//                case _ => complete(OK -> Option(null)) // todo:: remove null
+//              }
+//              case Failure(ex)    =>
+//                println(ex.getMessage)
+//                complete((InternalServerError, s"An error occurred: ${ex.getMessage}"))
+//            }
+            complete(OK -> "Not supported yet")
           }
         }
       }

@@ -20,18 +20,17 @@ class TransactionService(ctx: PostgresAsyncContext[SnakeCase.type]) {
     require(from._2.balanceFact > 0 && to._2.balanceFact > 0)
   }
 
-  def getFrom(trans: Transaction) = quote {
-    query[Account].join(query[AccountBalance]).on(_.accountId == _.accountBalanceId)
-      .filter(row => row._1.userInfoId == trans.userInfoIdFrom && row._1.accountType == trans.accountTypeFrom)
-  }
-  def getTo(trans: Transaction) = quote {
-    query[Account].join(query[AccountBalance]).on(_.accountId == _.accountBalanceId)
-      .filter(row => row._1.userInfoId == trans.userInfoIdTo && row._1.accountType == trans.accountTypeTo)
-  }
+//  def getFrom(trans: Transaction) = quote {
+//    query[Account].join(query[AccountBalance]).on(_.accountId == _.accountBalanceId)
+//      .filter(row => row._1.userInfoId == trans.userInfoIdFrom && row._1.accountType == trans.accountTypeFrom)
+//  }
+//  def getTo(trans: Transaction) = quote {
+//    query[Account].join(query[AccountBalance]).on(_.accountId == _.accountBalanceId)
+//      .filter(row => row._1.userInfoId == trans.userInfoIdTo && row._1.accountType == trans.accountTypeTo)
+//  }
 
 
 //  def transact(doTransactionMessage: DoTransactionMessage) = {
-//
 //
 //    val predicateList = doTransactionMessage.transactions.flatMap(trans => List({ account: Account =>
 //      account.userInfoId == trans.userInfoIdFrom && account.accountType == trans.accountTypeFrom

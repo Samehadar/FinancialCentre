@@ -8,7 +8,7 @@ import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
 import ch.qos.logback.classic.Logger
-import com.samehadar.financialcentre.core.AccountService
+import com.samehadar.financialcentre.core.{AccountService, TransactionService}
 import com.samehadar.financialcentre.db.model.Account
 import com.samehadar.financialcentre.db.{Config, DBConnection, DBMigrationManager}
 import com.samehadar.financialcentre.http.Router
@@ -42,7 +42,8 @@ object Main extends DBMigrationManager {
     val ctx = new PostgresAsyncContext(SnakeCase, "ctx") with ImplicitQuery
 
     val accountService = new AccountService(ctx)
-    val router = Router(accountService).route
+    val transactionService = new TransactionService(ctx)
+    val router = Router(accountService, transactionService).route
 
 //    DBConnection.create(Account(10000, "U0762543", "RUB", "INTERNAL", "RUB", false, false, new DateTime(2004, 4, 14, 15, 56, 5, 766), null, "Created from quill", 762, 0, null))
 //    DBConnection.runExample().foreach(println(_))
